@@ -47,12 +47,12 @@ create.pileup<-function(filenames,format=c("mase","clustal","phylip","fasta","ms
 		{
 			if(!file.exists(paste(ref_file,".fai",sep=""))) system(paste("samtools faidx",ref_file))
 			pathtoperl<-paste(system.file(package = "seqmutprobs"),"/Perl/pileup2csv.pl",sep="")
-			seqs<-mclapply(filenames,function(files,ref) read.table(pipe(paste("samtools mpileup -BQ0 -d10000000 -f ",ref," ",files," | perl ",pathtoperl,sep="")),header=TRUE,quote = "\"", sep="\t"),ref=ref_file,mc.cores=mc.cores)
+			seqs<-mclapply(filenames,function(files,ref) read.table(pipe(paste("samtools mpileup -BQ0 -d10000000 -f ",ref," ",files," | perl ",pathtoperl,sep="")),header=TRUE,na.strings="__",quote = "\"", sep="\t"),ref=ref_file,mc.cores=mc.cores)
 		}
 		else
 		{
 			pathtoperl<-paste(system.file(package = "seqmutprobs"),"/Perl/pileup2csv.pl",sep="")
-			seqs<-lapply(filenames,function(files) read.table(pipe(paste("perl",pathtoperl,files,sep=" ")),header=TRUE,quote = "\"", sep="\t"))
+			seqs<-lapply(filenames,function(files) read.table(pipe(paste("perl",pathtoperl,files,sep=" ")),header=TRUE,na.strings="__",quote = "\"", sep="\t"))
 		}
 		
 		if(is.null(samp_names[1]))

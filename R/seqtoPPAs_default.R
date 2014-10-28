@@ -80,10 +80,10 @@ seqtoPPAs.default<-function(filenames,ref_file,format=c("fasta","clustal","phyli
 		else
 		{
 			pathtoperl<-paste(system.file(package = "seqmutprobs"),"/Perl/pileup2csv.pl",sep="")
-			seqs<-mclapply(filenames,function(files) read.table(pipe(paste("perl",pathtoperl,files,sep=" ")),header=TRUE,quote = "\"", sep="\t"),mc.cores=mc.cores)
+			seqs<-mclapply(filenames,function(files) read.table(pipe(paste("perl",pathtoperl,files,sep=" ")),header=TRUE,na.strings="__",quote = "\"", sep="\t"),mc.cores=mc.cores)
 			ini<-unique(as.character(seqs[[1]]$NAME))
 			names(ini)<-ini
-		}	
+		}
 		ini_ref<-read.alignment(ref_file,format=ref_format[1])
 		ini_ref_nam<-ini_ref$nam
 		#remove excess "\r"s if necessary
